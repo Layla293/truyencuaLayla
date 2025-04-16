@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Truyện của Layla</title>
+  <style>
+    body { font-family: sans-serif; padding: 2em; max-width: 600px; margin: auto; background: #f9f9f9; }
+    h1 { text-align: center; color: #333; }
+    li { margin: 1em 0; background: #fff; padding: 1em; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); list-style: none; }
+    a { text-decoration: none; color: #007bff; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Truyện của Layla</h1>
+  <ul id="list"></ul>
+
+  <script>
+    const sheetID = "1eJdyVMQhQZFBc0-3NxFNSu5okQ9AEBl0QB3cHfQvC9o";
+    const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json&sheet=Sheet1`;
+
+    fetch(sheetURL)
+      .then(res => res.text())
+      .then(text => {
+        const json = JSON.parse(text.substring(47).slice(0, -2));
+        const rows = json.table.rows;
+        const list = document.getElementById('list');
+
+        rows.forEach(row => {
+          const name = row.c[0]?.v;
+          const url = row.c[1]?.v;
+          if (name && url) {
+            const li = document.createElement('li');
+            li.innerHTML = `<a href=\"${url}\" target=\"_blank\">${name}</a>`;
+            list.appendChild(li);
+          }
+        });
+      })
+      .catch(err => {
+        document.getElementById('list').innerHTML = '<li>Lỗi khi tải dữ liệu. Vui lòng thử lại sau.</li>';
+        console.error('Lỗi khi đọc Google Sheet:', err);
+      });
+  </script>
+</body>
+</html>
