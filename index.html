@@ -19,18 +19,21 @@
       transition: background-color 1s ease, color 1s ease;
     }
     @keyframes club {
-  0% { transform: rotate(0deg); color: #ff6f61; text-shadow: 0 0 8px #ff6f61; }
-  25% { transform: rotate(1.5deg); color: #00ffe5; text-shadow: 0 0 8px #00ffe5; }
-  50% { transform: rotate(-1.5deg); color: #ffff66; text-shadow: 0 0 8px #ffff66; }
-  75% { transform: rotate(1deg); color: #ff00cc; text-shadow: 0 0 8px #ff00cc; }
-  100% { transform: rotate(0deg); color: #ff6f61; text-shadow: 0 0 8px #ff6f61; }
+  0%@keyframes pulse {
+  0% { transform: scale(1); text-shadow: 0 0 4px #ff6f61; }
+  50% { transform: scale(1.03); text-shadow: 0 0 12px #ff9f91; }
+  100% { transform: scale(1); text-shadow: 0 0 4px #ff6f61; }
 }
 h1 {
   text-align: center;
   margin-bottom: 0.5em;
-  animation: club 1s infinite ease-in-out;
+  font-size: 2.4em;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #ff6f61;
+  animation: pulse 2s infinite ease-in-out;
 }
-
     .mood-text {
       text-align: center;
       font-weight: bold;
