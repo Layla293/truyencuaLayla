@@ -7,16 +7,28 @@
   <style>
     body { font-family: sans-serif; padding: 2em; max-width: 700px; margin: auto; background: #f9f9f9; }
     h1 { text-align: center; color: #333; }
+    .search-box { margin-bottom: 1em; text-align: center; }
+    input[type="text"] {
+      padding: 0.5em;
+      width: 100%;
+      max-width: 400px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1em;
+    }
+    .filters { margin: 1em 0; display: flex; flex-wrap: wrap; gap: 0.5em; justify-content: center; }
+    .filter-btn { padding: 0.5em 1em; border: none; border-radius: 6px; background: #eee; cursor: pointer; }
+    .filter-btn.active { background: #007bff; color: #fff; }
     ul { padding: 0; list-style: none; }
     li { margin: 1em 0; background: #fff; padding: 1em; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
     a { text-decoration: none; color: #007bff; font-weight: bold; }
-    .filters { margin-bottom: 1.5em; display: flex; flex-wrap: wrap; gap: 0.5em; }
-    .filter-btn { padding: 0.5em 1em; border: none; border-radius: 6px; background: #eee; cursor: pointer; }
-    .filter-btn.active { background: #007bff; color: #fff; }
   </style>
 </head>
 <body>
   <h1>Truyện của Layla</h1>
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Tìm truyện theo tên...">
+  </div>
   <div class="filters" id="filters"></div>
   <ul id="list"></ul>
 
@@ -25,6 +37,7 @@
     const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json&sheet=Sheet1`;
 
     let allStories = [];
+    let activeCP = null;
 
     fetch(sheetURL)
       .then(res => res.text())
@@ -33,24 +46,26 @@
         const rows = json.table.rows;
 
         allStories = rows.map(row => ({
-          name: row.c[0]?.v,
-          url: row.c[1]?.v,
+          name: row.c[0]?.v || "",
+          url: row.c[1]?.v || "#",
           cp: row.c[2]?.v?.split(',').map(cp => cp.trim()) || []
         }));
 
-        const uniqueCPs = [...new Set(allStories.flatMap(story => story.cp))];
-        const filterBox = document.getElementById('filters');
-
-        uniqueCPs.forEach(cp => {
-          const btn = document.createElement('button');
-          btn.className = 'filter-btn';
-          btn.innerText = cp;
-          btn.onclick = () => toggleFilter(cp, btn);
-          filterBox.appendChild(btn);
-        });
-
+        renderFilters();
         renderList(allStories);
       });
+
+    function renderFilters() {
+      const uniqueCPs = [...new Set(allStories.flatMap(story => story.cp))];
+      const filterBox = document.getElementById('filters');
+      uniqueCPs.forEach(cp => {
+        const btn = document.createElement('button');
+        btn.className = 'filter-btn';
+        btn.innerText = cp;
+        btn.onclick = () => toggleFilter(cp, btn);
+        filterBox.appendChild(btn);
+      });
+    }
 
     function renderList(data) {
       const list = document.getElementById('list');
@@ -62,22 +77,32 @@
       });
     }
 
-    let activeCP = null;
-
     function toggleFilter(cp, button) {
       const buttons = document.querySelectorAll('.filter-btn');
       buttons.forEach(btn => btn.classList.remove('active'));
 
       if (activeCP === cp) {
         activeCP = null;
-        renderList(allStories);
+        button.classList.remove('active');
       } else {
         activeCP = cp;
         button.classList.add('active');
-        const filtered = allStories.filter(story => story.cp.includes(cp));
-        renderList(filtered);
       }
+
+      applyFilters();
     }
+
+    function applyFilters() {
+      const searchText = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = allStories.filter(story => {
+        const matchCP = !activeCP || story.cp.includes(activeCP);
+        const matchName = story.name.toLowerCase().includes(searchText);
+        return matchCP && matchName;
+      });
+      renderList(filtered);
+    }
+
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
   </script>
 </body>
 </html>
