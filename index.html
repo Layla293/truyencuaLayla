@@ -20,6 +20,12 @@
       text-align: center;
       color: #333;
     }
+    .mood-text {
+      text-align: center;
+      margin-bottom: 1em;
+      font-weight: bold;
+      color: #555;
+    }
     .search-box {
       margin-bottom: 1em;
       text-align: center;
@@ -81,6 +87,7 @@
 </head>
 <body>
   <h1>Truyện của Layla</h1>
+  <div class="mood-text" id="moodText">Chào bạn!</div>
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Tìm truyện theo tên...">
   </div>
@@ -165,6 +172,21 @@
     function toggleDisco() {
       document.body.classList.toggle('disco-mode');
     }
+
+    // Mood theo ngày
+    const day = new Date().getDay();
+    const moodText = document.getElementById('moodText');
+    const moods = [
+      { color: '#ffecd2', text: 'Chủ Nhật – Mộng mơ thư giãn' },
+      { color: '#e6f7ff', text: 'Thứ Hai – Dịu dàng bắt đầu tuần' },
+      { color: '#fff9cc', text: 'Thứ Ba – Nắng nhẹ tươi sáng' },
+      { color: '#fce4ec', text: 'Thứ Tư – Lavender mộng mơ' },
+      { color: '#ffe0b2', text: 'Thứ Năm – Cam dịu nhẹ nhàng' },
+      { color: '#ffcdd2', text: 'Thứ Sáu – Hồng rực năng lượng' },
+      { color: '#d0f0c0', text: 'Thứ Bảy – Xanh biển thư giãn' },
+    ];
+    document.body.style.backgroundColor = moods[day].color;
+    moodText.innerText = `Hôm nay là ${moods[day].text}`;
   </script>
 </body>
 </html>
