@@ -18,10 +18,19 @@
       color: var(--text-color);
       transition: background-color 1s ease, color 1s ease;
     }
-    h1 {
-      text-align: center;
-      margin-bottom: 0.5em;
-    }
+    @keyframes club {
+  0% { transform: rotate(0deg); color: #ff6f61; text-shadow: 0 0 8px #ff6f61; }
+  25% { transform: rotate(1.5deg); color: #00ffe5; text-shadow: 0 0 8px #00ffe5; }
+  50% { transform: rotate(-1.5deg); color: #ffff66; text-shadow: 0 0 8px #ffff66; }
+  75% { transform: rotate(1deg); color: #ff00cc; text-shadow: 0 0 8px #ff00cc; }
+  100% { transform: rotate(0deg); color: #ff6f61; text-shadow: 0 0 8px #ff6f61; }
+}
+h1 {
+  text-align: center;
+  margin-bottom: 0.5em;
+  animation: club 1s infinite ease-in-out;
+}
+
     .mood-text {
       text-align: center;
       font-weight: bold;
