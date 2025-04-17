@@ -1,13 +1,12 @@
 
 <!DOCTYPE html>
-
 <html lang="vi">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Truyện của Layla</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&amp;display=swap" rel="stylesheet"/>
-<style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Truyện của Layla</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <style>
     body {
       font-family: 'Orbitron', sans-serif;
       padding: 2em;
@@ -80,54 +79,111 @@
       text-decoration: none;
       font-weight: bold;
     }
-  
-.quote-scroll {
-  white-space: nowrap;
-  display: inline-block;
-  padding-left: 100%;
-  animation: scrollText 15s linear infinite;
-  font-size: 1.1em;
-  color: #0ff;
-  text-shadow: 0 0 5px #0ff;
-  border-top: 2px dashed #0ff;
-  border-bottom: 2px dashed #0ff;
-  overflow: hidden;
-  margin: 1em auto;
-  max-width: 100%;
-}
-@keyframes scrollText {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
-}
-</style>
+  </style>
 </head>
 <body>
-<h1>TRUYỆN CỦA LAYLA</h1>
+  <h1>TRUYỆN CỦA LAYLA</h1>
+  <div class="mood-text" id="moodText"></div>
+  <div class="quote-text" id="quoteText"></div>
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Tìm truyện theo tên...">
+  </div>
+  <div class="filters" id="filters"></div>
+  <div class="search-box">
+    <button class="toggle-btn" onclick="toggleDisco()">Bật Disco</button>
+  </div>
+  <ul id="list"></ul>
 
-<div class="quote-scroll" id="quoteScroll"></div>
-<div class="search-box">
-<input id="searchInput" placeholder="Tìm truyện theo tên..." type="text"/>
-</div>
-<div class="filters" id="filters"></div>
-<div class="search-box">
+  <script>
+    const sheetID = "1eJdyVMQhQZFBc0-3NxFNSu5okQ9AEBl0QB3cHfQvC9o";
+    const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json&sheet=Sheet1`;
+    let allStories = [], activeCP = null;
 
-</div>
-<ul id="list"></ul>
+    fetch(sheetURL)
+      .then(res => res.text())
+      .then(text => {
+        const json = JSON.parse(text.substring(47).slice(0, -2));
+        const rows = json.table.rows;
+        allStories = rows.map(row => ({
+          name: row.c[0]?.v || "",
+          url: row.c[1]?.v || "#",
+          cp: row.c[2]?.v?.split(',').map(cp => cp.trim()) || []
+        }));
+        renderFilters();
+        renderList(allStories);
+      });
 
-<script>
-  const quoteScroll = document.getElementById('quoteScroll');
-  const quotes = [
-    'Mỗi dòng truyện là một bước chân vào thế giới mộng mơ.',
-    'Đọc truyện cũng như yêu ai đó – càng đọc càng dính!',
-    'Layla đọc truyện là vũ trụ dễ thương thêm một bậc.',
-    'Một trang truyện = một nụ cười thầm.'
-  ];
-  let index = 0;
-  function updateQuote() {
-    quoteScroll.innerText = quotes[index];
-    index = (index + 1) % quotes.length;
-  }
-  updateQuote();
-  setInterval(updateQuote, 16000);
-</script></body>
+    function renderFilters() {
+      const uniqueCPs = [...new Set(allStories.flatMap(story => story.cp))];
+      const filterBox = document.getElementById('filters');
+      uniqueCPs.forEach(cp => {
+        const btn = document.createElement('button');
+        btn.className = 'filter-btn';
+        btn.innerText = cp;
+        btn.onclick = () => toggleFilter(cp, btn);
+        filterBox.appendChild(btn);
+      });
+    }
+
+    function renderList(data) {
+      const list = document.getElementById('list');
+      list.innerHTML = '';
+      data.forEach(story => {
+        const li = document.createElement('li');
+        li.innerHTML = `<a href="${story.url}" target="_blank">${story.name}</a><br><small>CP: ${story.cp.join(', ')}</small>`;
+        list.appendChild(li);
+      });
+    }
+
+    function toggleFilter(cp, button) {
+      const buttons = document.querySelectorAll('.filter-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      if (activeCP === cp) {
+        activeCP = null;
+        button.classList.remove('active');
+      } else {
+        activeCP = cp;
+        button.classList.add('active');
+      }
+      applyFilters();
+    }
+
+    function applyFilters() {
+      const searchText = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = allStories.filter(story => {
+        const matchCP = !activeCP || story.cp.includes(activeCP);
+        const matchName = story.name.toLowerCase().includes(searchText);
+        return matchCP && matchName;
+      });
+      renderList(filtered);
+    }
+
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+
+    function toggleDisco() {
+      document.body.classList.toggle('disco-mode');
+    }
+
+    const day = new Date().getDay();
+    const moodText = document.getElementById('moodText');
+    const quoteText = document.getElementById('quoteText');
+    const moods = [
+      '☁️ Chủ Nhật – Mộng mơ thư giãn',
+      '🍵 Thứ Hai – Dịu dàng đầu tuần',
+      '☀️ Thứ Ba – Nắng nhẹ tươi sáng',
+      '💜 Thứ Tư – Lavender mộng mơ',
+      '🧡 Thứ Năm – Cam dịu nhẹ nhàng',
+      '✨ Thứ Sáu – Hồng rực năng lượng',
+      '🌊 Thứ Bảy – Xanh biển thư giãn'
+    ];
+    const quotes = [
+      'Mỗi dòng truyện là một bước chân vào thế giới mộng mơ.',
+      'Đọc truyện cũng như yêu ai đó – càng đọc càng dính!',
+      'Layla đọc truyện là vũ trụ dễ thương thêm một bậc.',
+      'Một trang truyện = một nụ cười thầm.'
+    ];
+    moodText.innerText = `Hôm nay là ${moods[day]}`;
+    quoteText.innerText = quotes[Math.floor(Math.random() * quotes.length)];
+  </script>
+</body>
 </html>
