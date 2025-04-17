@@ -1,231 +1,114 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Truyện của Layla</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Pacifico&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg-default: #f9f9f9;
-      --text-color: #333;
-    }
     body {
       font-family: 'Orbitron', sans-serif;
       padding: 2em;
-      max-width: 700px;
       margin: auto;
-      background-color: var(--bg-default);
-      color: var(--text-color);
+      max-width: 700px;
+      background-color: #1e1e1e;
+      color: #fff;
       transition: background-color 1s ease, color 1s ease;
       overflow-x: hidden;
     }
-
-    @keyframes pulse {
-      0% { transform: scale(1); text-shadow: 0 0 4px #00f0ff; }
-      50% { transform: scale(1.05); text-shadow: 0 0 14px #00ffff; }
-      100% { transform: scale(1); text-shadow: 0 0 4px #00f0ff; }
-    }
-
     h1 {
       text-align: center;
+      font-size: 2.5em;
       margin-bottom: 0.5em;
-      font-size: 2.4em;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #00f0ff;
-      animation: pulse 2s infinite ease-in-out;
+      color: cyan;
+      text-shadow: 0 0 10px cyan, 0 0 20px cyan;
+      animation: blink 1.5s infinite alternate;
     }
-
-    .mood-text {
+    @keyframes blink {
+      0% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+    .mood-text, .quote-text {
       text-align: center;
-      font-weight: bold;
-      margin-bottom: 0.5em;
-      font-size: 1.1em;
-      animation: slideIn 1s ease-out;
-    }
-
-    .quote-text {
-      text-align: center;
-      font-style: italic;
-      color: #666;
-      margin-bottom: 1.5em;
-      animation: fadeIn 2s ease-in;
-    }
-
-    .search-box {
       margin-bottom: 1em;
-      text-align: center;
     }
-
+    .quote-text {
+      font-style: italic;
+      opacity: 0.8;
+    }
+    .search-box {
+      text-align: center;
+      margin: 1em 0;
+    }
     input[type="text"] {
       padding: 0.5em;
-      width: 100%;
+      width: 90%;
       max-width: 400px;
-      border: 1px solid #ccc;
       border-radius: 6px;
+      border: none;
       font-size: 1em;
     }
-
     .filters {
-      margin: 1em 0;
       display: flex;
       flex-wrap: wrap;
-      gap: 0.5em;
       justify-content: center;
+      gap: 0.5em;
     }
-
     .filter-btn, .toggle-btn {
       padding: 0.5em 1em;
       border: none;
       border-radius: 6px;
-      background: #eee;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-
-    .filter-btn:hover, .toggle-btn:hover {
-      transform: scale(1.05);
-      background: #dfe6e9;
-    }
-
-    .filter-btn.active {
-      background: #007bff;
+      background: #444;
       color: #fff;
+      cursor: pointer;
     }
-
     ul {
-      padding: 0;
       list-style: none;
+      padding: 0;
     }
-
     li {
       margin: 1em 0;
-      background: #fff;
+      background: #111;
       padding: 1em;
       border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 5px rgba(255,255,255,0.1);
     }
-
     a {
+      color: #00f6ff;
       text-decoration: none;
-      color: #007bff;
       font-weight: bold;
-    }
-
-    @keyframes disco {
-      0%   { background-color: #ffb3ba; }
-      20%  { background-color: #ffdfba; }
-      40%  { background-color: #ffffba; }
-      60%  { background-color: #baffc9; }
-      80%  { background-color: #bae1ff; }
-      100% { background-color: #ffb3ba; }
-    }
-
-    .disco-mode {
-      animation: disco 10s infinite;
-    }
-
-    @keyframes slideIn {
-      from { transform: translateY(-20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    .rain {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .rain span {
-      position: absolute;
-      display: block;
-      width: 2px;
-      background: rgba(255, 255, 255, 0.15);
-      animation: fall linear infinite;
-    }
-
-    @keyframes fall {
-      0% { transform: translateY(-100px); opacity: 0; }
-      30% { opacity: 1; }
-      100% { transform: translateY(100vh); opacity: 0; }
-    }
-
-    #avatar {
-      position: fixed;
-      bottom: 1em;
-      right: 1em;
-      background: #fff;
-      color: #000;
-      padding: 0.8em 1.2em;
-      border-radius: 2em;
-      font-family: 'Pacifico', cursive;
-      font-size: 0.9em;
-      box-shadow: 0 0 10px #fff;
-      animation: float 3s ease-in-out infinite;
-      z-index: 3;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-5px); }
-    }
-
-    .goodnight {
-      background: #fdf6f8 !important;
-      color: #222 !important;
     }
   </style>
 </head>
-<body id="page">
-  <h1>Truyện của Layla</h1>
-  <div class="mood-text" id="moodText">Mood hôm nay nè...</div>
-  <div class="quote-text" id="quoteText">Một câu truyền cảm hứng nhỏ xíu...</div>
-
+<body>
+  <h1>TRUYỆN CỦA LAYLA</h1>
+  <div class="mood-text" id="moodText"></div>
+  <div class="quote-text" id="quoteText"></div>
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Tìm truyện theo tên...">
   </div>
-
   <div class="filters" id="filters"></div>
-
   <div class="search-box">
     <button class="toggle-btn" onclick="toggleDisco()">Bật Disco</button>
-    <button class="toggle-btn" onclick="toggleNight()">Goodnight Mode</button>
   </div>
-
   <ul id="list"></ul>
-  <div class="rain" id="rain"></div>
-  <div id="avatar">Layla online nè~</div>
 
   <script>
     const sheetID = "1eJdyVMQhQZFBc0-3NxFNSu5okQ9AEBl0QB3cHfQvC9o";
     const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json&sheet=Sheet1`;
-
-    let allStories = [];
-    let activeCP = null;
+    let allStories = [], activeCP = null;
 
     fetch(sheetURL)
       .then(res => res.text())
       .then(text => {
         const json = JSON.parse(text.substring(47).slice(0, -2));
         const rows = json.table.rows;
-
         allStories = rows.map(row => ({
           name: row.c[0]?.v || "",
           url: row.c[1]?.v || "#",
           cp: row.c[2]?.v?.split(',').map(cp => cp.trim()) || []
         }));
-
         renderFilters();
         renderList(allStories);
       });
@@ -255,7 +138,6 @@
     function toggleFilter(cp, button) {
       const buttons = document.querySelectorAll('.filter-btn');
       buttons.forEach(btn => btn.classList.remove('active'));
-
       if (activeCP === cp) {
         activeCP = null;
         button.classList.remove('active');
@@ -263,7 +145,6 @@
         activeCP = cp;
         button.classList.add('active');
       }
-
       applyFilters();
     }
 
@@ -281,70 +162,28 @@
 
     function toggleDisco() {
       document.body.classList.toggle('disco-mode');
-      playSound('pop');
-    }
-
-    function toggleNight() {
-      document.getElementById('page').classList.toggle('goodnight');
     }
 
     const day = new Date().getDay();
     const moodText = document.getElementById('moodText');
     const quoteText = document.getElementById('quoteText');
     const moods = [
-      { color: '#ffecd2', text: '☁️ Chủ Nhật – Mộng mơ thư giãn' },
-      { color: '#e6f7ff', text: '🍵 Thứ Hai – Dịu dàng đầu tuần' },
-      { color: '#fff9cc', text: '☀️ Thứ Ba – Nắng nhẹ tươi sáng' },
-      { color: '#fce4ec', text: '💜 Thứ Tư – Lavender mộng mơ' },
-      { color: '#ffe0b2', text: '🧡 Thứ Năm – Cam dịu nhẹ nhàng' },
-      { color: '#ffcdd2', text: '✨ Thứ Sáu – Hồng rực năng lượng' },
-      { color: '#d0f0c0', text: '🌊 Thứ Bảy – Xanh biển thư giãn' },
+      '☁️ Chủ Nhật – Mộng mơ thư giãn',
+      '🍵 Thứ Hai – Dịu dàng đầu tuần',
+      '☀️ Thứ Ba – Nắng nhẹ tươi sáng',
+      '💜 Thứ Tư – Lavender mộng mơ',
+      '🧡 Thứ Năm – Cam dịu nhẹ nhàng',
+      '✨ Thứ Sáu – Hồng rực năng lượng',
+      '🌊 Thứ Bảy – Xanh biển thư giãn'
     ];
     const quotes = [
       'Mỗi dòng truyện là một bước chân vào thế giới mộng mơ.',
-      'Hôm nay bạn đáng yêu như một đoạn văn ngọt ngào.',
       'Đọc truyện cũng như yêu ai đó – càng đọc càng dính!',
       'Layla đọc truyện là vũ trụ dễ thương thêm một bậc.',
-      'Truyện không tìm bạn – bạn tìm truyện vì bạn chill!',
-      'Thế giới cần tình yêu, Layla cần một chương mới!',
-      'Một trang truyện = một nụ cười thầm.',
+      'Một trang truyện = một nụ cười thầm.'
     ];
-
-    document.body.style.backgroundColor = moods[day].color;
-    moodText.innerText = `Hôm nay là ${moods[day].text}`;
+    moodText.innerText = `Hôm nay là ${moods[day]}`;
     quoteText.innerText = quotes[Math.floor(Math.random() * quotes.length)];
-
-    const hour = new Date().getHours();
-    if (hour >= 19 || hour < 5) {
-      document.body.style.backgroundColor = '#1e1e1e';
-      document.body.style.color = '#eee';
-    }
-
-    function playSound(type) {
-      const audio = new Audio(type === 'pop'
-        ? 'https://cdn.pixabay.com/audio/2022/10/19/audio_372ef74630.mp3'
-        : 'https://cdn.pixabay.com/audio/2022/10/30/audio_6d4d0e6e62.mp3');
-      audio.volume = 0.3;
-      audio.play();
-    }
-
-    const rainContainer = document.getElementById("rain");
-    for (let i = 0; i < 40; i++) {
-      const drop = document.createElement("span");
-      const left = Math.random() * 100;
-      const delay = Math.random() * 3;
-      const duration = 3 + Math.random() * 2;
-      const height = 10 + Math.random() * 20;
-      const opacity = 0.1 + Math.random() * 0.3;
-
-      drop.style.left = left + "vw";
-      drop.style.height = height + "px";
-      drop.style.animationDuration = duration + "s";
-      drop.style.animationDelay = delay + "s";
-      drop.style.background = `rgba(255,255,255,${opacity})`;
-
-      rainContainer.appendChild(drop);
-    }
   </script>
 </body>
 </html>
