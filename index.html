@@ -79,9 +79,26 @@
       text-decoration: none;
       font-weight: bold;
     }
+
+    .light-mode {
+      background-color: #f9f9f9 !important;
+      color: #111 !important;
+    }
+    .light-mode li {
+      background: #fff !important;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+    .light-mode a {
+      color: #007bff !important;
+    }
+    .light-mode .filter-btn,
+    .light-mode .toggle-btn {
+      background: #eee !important;
+      color: #000 !important;
+    }
   </style>
 </head>
-<body>
+<body id="page">
   <h1>TRUYỆN CỦA LAYLA</h1>
   <div class="mood-text" id="moodText"></div>
   <div class="quote-text" id="quoteText"></div>
@@ -91,6 +108,7 @@
   <div class="filters" id="filters"></div>
   <div class="search-box">
     <button class="toggle-btn" onclick="toggleDisco()">Bật Disco</button>
+    <button class="toggle-btn" onclick="toggleLight()">Chế độ sáng</button>
   </div>
   <ul id="list"></ul>
 
@@ -162,6 +180,10 @@
 
     function toggleDisco() {
       document.body.classList.toggle('disco-mode');
+    }
+
+    function toggleLight() {
+      document.getElementById('page').classList.toggle('light-mode');
     }
 
     const day = new Date().getDay();
