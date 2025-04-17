@@ -297,5 +297,52 @@
       audio.play();
     }
   </script>
+<!-- Mưa LED được tối ưu để không đơ -->
+<div class="rain" id="rain"></div>
+<style>
+  .rain {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .rain span {
+    position: absolute;
+    display: block;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.15);
+    animation: fall linear infinite;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(-100px); opacity: 0; }
+    30% { opacity: 1; }
+    100% { transform: translateY(100vh); opacity: 0; }
+  }
+</style>
+<script>
+  // Rải mưa ít hơn, nhẹ hơn
+  const rainContainer = document.getElementById("rain");
+  for (let i = 0; i < 40; i++) {
+    const drop = document.createElement("span");
+    const left = Math.random() * 100;
+    const delay = Math.random() * 3;
+    const duration = 3 + Math.random() * 2;
+    const height = 10 + Math.random() * 20;
+    const opacity = 0.1 + Math.random() * 0.3;
+
+    drop.style.left = left + "vw";
+    drop.style.height = height + "px";
+    drop.style.animationDuration = duration + "s";
+    drop.style.animationDelay = delay + "s";
+    drop.style.background = `rgba(255,255,255,${opacity})`;
+
+    rainContainer.appendChild(drop);
+  }
+</script>
 </body>
 </html>
