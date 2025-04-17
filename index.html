@@ -1,80 +1,148 @@
 
 <!DOCTYPE html>
+
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Truyện của Layla</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Truyện của Layla</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&amp;display=swap" rel="stylesheet"/>
+<style>
     body {
-      background-color: #000;
-      color: #0ff;
       font-family: 'Orbitron', sans-serif;
       padding: 2em;
       margin: auto;
       max-width: 700px;
+      background-color: #1e1e1e;
+      color: #fff;
+      transition: background-color 1s ease, color 1s ease;
+      overflow-x: hidden;
+    }
+    h1 {
       text-align: center;
+      font-size: 2.5em;
+      margin-bottom: 0.5em;
+      color: cyan;
+      text-shadow: 0 0 10px cyan, 0 0 20px cyan;
+      animation: blink 1.5s infinite alternate;
     }
-
-    .quote-box {
-      position: relative;
-      width: 100%;
-      max-width: 600px;
-      height: 50px;
-      margin: 2em auto;
-      background: #111;
-      border: 2px dashed #0ff;
-      box-shadow: 0 0 20px #0ff;
-      overflow: hidden;
+    @keyframes blink {
+      0% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+    .mood-text, .quote-text {
+      text-align: center;
+      margin-bottom: 1em;
+    }
+    .quote-text {
+      font-style: italic;
+      opacity: 0.8;
+    }
+    .search-box {
+      text-align: center;
+      margin: 1em 0;
+    }
+    input[type="text"] {
+      padding: 0.5em;
+      width: 90%;
+      max-width: 400px;
+      border-radius: 6px;
+      border: none;
+      font-size: 1em;
+    }
+    .filters {
       display: flex;
-      align-items: center;
-      justify-content: flex-start;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5em;
     }
-
-    .quote-scroll {
-      white-space: nowrap;
-      display: inline-block;
-      padding-left: 100%;
-      animation: scrollText 15s linear infinite;
-      font-size: 1.2em;
-      color: #0ff;
-      text-shadow: 0 0 5px #0ff;
+    .filter-btn, .toggle-btn {
+      padding: 0.5em 1em;
+      border: none;
+      border-radius: 6px;
+      background: #444;
+      color: #fff;
+      cursor: pointer;
     }
-
-    @keyframes scrollText {
-      0% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
+    ul {
+      list-style: none;
+      padding: 0;
     }
-  </style>
+    li {
+      margin: 1em 0;
+      background: #111;
+      padding: 1em;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(255,255,255,0.1);
+    }
+    a {
+      color: #00f6ff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  
+.quote-scroll {
+  white-space: nowrap;
+  display: inline-block;
+  padding-left: 100%;
+  animation: scrollText 15s linear infinite;
+  font-size: 1.1em;
+  color: #0ff;
+  text-shadow: 0 0 5px #0ff;
+  border-top: 2px dashed #0ff;
+  border-bottom: 2px dashed #0ff;
+  overflow: hidden;
+  margin: 1em auto;
+  max-width: 100%;
+}
+@keyframes scrollText {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+</style>
 </head>
 <body>
-  <h1>TRUYỆN CỦA LAYLA</h1>
+<h1>TRUYỆN CỦA LAYLA</h1>
+<div class="quote-scroll" id="quoteScroll"></div>
+<div class="search-box">
+<input id="searchInput" placeholder="Tìm truyện theo tên..." type="text"/>
+</div>
+<div class="filters" id="filters"></div>
+<div class="search-box">
+</div>
+<ul id="list"></ul>
+<script>
+  const quoteText = document.getElementById('quoteText');
+  const quotes = [
+    'Mỗi dòng truyện là một bước chân vào thế giới mộng mơ.',
+    'Hôm nay bạn đáng yêu như một đoạn văn ngọt ngào.',
+    'Đọc truyện cũng như yêu ai đó – càng đọc càng dính!',
+    'Layla đọc truyện là vũ trụ dễ thương thêm một bậc.',
+    'Truyện không tìm bạn – bạn tìm truyện vì bạn chill!',
+    'Thế giới cần tình yêu, Layla cần một chương mới!',
+    'Một trang truyện = một nụ cười thầm.'
+  ];
+  quoteText.innerText = quotes[Math.floor(Math.random() * quotes.length)];
+</script>
 
-  <div class="quote-box">
-    <div class="quote-scroll" id="quoteScroll"></div>
-  </div>
-
-  <script>
-    const quotes = [
-      'Mỗi dòng truyện là một bước chân vào thế giới mộng mơ.',
-      'Hôm nay bạn đáng yêu như một đoạn văn ngọt ngào.',
-      'Đọc truyện cũng như yêu ai đó – càng đọc càng dính!',
-      'Layla đọc truyện là vũ trụ dễ thương thêm một bậc.',
-      'Truyện không tìm bạn – bạn tìm truyện vì bạn chill!',
-      'Thế giới cần tình yêu, Layla cần một chương mới!',
-      'Một trang truyện = một nụ cười thầm.'
-    ];
-    const quoteScroll = document.getElementById('quoteScroll');
-    let index = 0;
-
-    function updateQuote() {
-      quoteScroll.innerText = quotes[index];
-      index = (index + 1) % quotes.length;
-    }
-
-    updateQuote();
-    setInterval(updateQuote, 16000); // đổi câu mỗi 16s, sau khi chạy hết hiệu ứng
-  </script>
+<script>
+  const quoteScroll = document.getElementById('quoteScroll');
+  const quotes = [
+    'Mỗi dòng truyện là một bước chân vào thế giới mộng mơ.',
+    'Hôm nay bạn đáng yêu như một đoạn văn ngọt ngào.',
+    'Đọc truyện cũng như yêu ai đó – càng đọc càng dính!',
+    'Layla đọc truyện là vũ trụ dễ thương thêm một bậc.',
+    'Truyện không tìm bạn – bạn tìm truyện vì bạn chill!',
+    'Thế giới cần tình yêu, Layla cần một chương mới!',
+    'Một trang truyện = một nụ cười thầm.'
+  ];
+  let index = 0;
+  function updateQuote() {
+    quoteScroll.innerText = quotes[index];
+    index = (index + 1) % quotes.length;
+  }
+  updateQuote();
+  setInterval(updateQuote, 16000);
+</script>
 </body>
 </html>
