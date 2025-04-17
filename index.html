@@ -17,6 +17,7 @@
       background-color: var(--bg-default);
       color: var(--text-color);
       transition: background-color 1s ease, color 1s ease;
+      overflow: hidden;
     }
 
     @keyframes pulse {
@@ -134,6 +135,31 @@
       from { opacity: 0; }
       to { opacity: 1; }
     }
+
+    /* Mưa LED */
+    .rain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .rain span {
+      position: absolute;
+      display: block;
+      width: 2px;
+      background: rgba(255, 255, 255, 0.2);
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-100px); opacity: 0; }
+      30% { opacity: 1; }
+      100% { transform: translateY(110vh); opacity: 0; }
+    }
   </style>
 </head>
 <body>
@@ -152,6 +178,7 @@
   </div>
 
   <ul id="list"></ul>
+  <div class="rain" id="rain"></div>
 
   <script>
     const sheetID = "1eJdyVMQhQZFBc0-3NxFNSu5okQ9AEBl0QB3cHfQvC9o";
@@ -263,9 +290,9 @@
     }
 
     function playSound(type) {
-      const audio = new Audio(type === 'pop' ?
-        'https://cdn.pixabay.com/audio/2022/10/19/audio_372ef74630.mp3' :
-        'https://cdn.pixabay.com/audio/2022/10/30/audio_6d4d0e6e62.mp3');
+      const audio = new Audio(type === 'pop'
+        ? 'https://cdn.pixabay.com/audio/2022/10/19/audio_372ef74630.mp3'
+        : 'https://cdn.pixabay.com/audio/2022/10/30/audio_6d4d0e6e62.mp3');
       audio.volume = 0.3;
       audio.play();
     }
