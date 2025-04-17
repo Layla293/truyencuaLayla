@@ -1,66 +1,64 @@
-
-<!DOCTYPE html>
-<html lang="vi">
+<!DOCTYPE html><html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Truyện của Layla</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Pacifico&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --text-color: #0ff;
+      --bg-dark: #000;
+      --bg-light: #f9f9f9;
+    }
     body {
       font-family: 'Orbitron', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-color);
       padding: 2em;
-      margin: auto;
       max-width: 700px;
-      background-color: #1e1e1e;
-      color: #fff;
+      margin: auto;
       transition: background-color 1s ease, color 1s ease;
-      overflow-x: hidden;
+    }
+    body.light-mode {
+      background-color: var(--bg-light);
+      color: #333;
     }
     h1 {
       text-align: center;
       font-size: 2.5em;
       margin-bottom: 0.5em;
-      color: cyan;
-      text-shadow: 0 0 10px cyan, 0 0 20px cyan;
-      animation: blink 1.5s infinite alternate;
+      text-shadow: 0 0 15px var(--text-color);
     }
-    @keyframes blink {
-      0% { opacity: 1; }
-      100% { opacity: 0.6; }
-    }
-    .mood-text, .quote-text {
+    .mood-text {
       text-align: center;
-      margin-bottom: 1em;
+      font-weight: bold;
+      margin-bottom: 0.5em;
     }
     .quote-text {
+      text-align: center;
       font-style: italic;
-      opacity: 0.8;
+      margin-bottom: 1.5em;
     }
     .search-box {
       text-align: center;
-      margin: 1em 0;
+      margin-bottom: 1em;
     }
     input[type="text"] {
       padding: 0.5em;
-      width: 90%;
+      width: 100%;
       max-width: 400px;
       border-radius: 6px;
       border: none;
-      font-size: 1em;
     }
     .filters {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 0.5em;
+      text-align: center;
+      margin-bottom: 1em;
     }
     .filter-btn, .toggle-btn {
       padding: 0.5em 1em;
       border: none;
       border-radius: 6px;
-      background: #444;
-      color: #fff;
+      margin: 0.2em;
       cursor: pointer;
     }
     ul {
@@ -68,33 +66,30 @@
       padding: 0;
     }
     li {
-      margin: 1em 0;
-      background: #111;
+      background: rgba(255, 255, 255, 0.05);
       padding: 1em;
+      margin-bottom: 1em;
       border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(255,255,255,0.1);
     }
     a {
-      color: #00f6ff;
-      text-decoration: none;
+      color: var(--text-color);
       font-weight: bold;
+      text-decoration: none;
     }
   </style>
 </head>
 <body>
   <h1>TRUYỆN CỦA LAYLA</h1>
-  <div class="mood-text" id="moodText"></div>
-  <div class="quote-text" id="quoteText"></div>
+  <div class="mood-text" id="moodText">Mood hôm nay...</div>
+  <div class="quote-text" id="quoteText">Một câu truyền cảm hứng nhỏ xíu...</div>
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Tìm truyện theo tên...">
   </div>
   <div class="filters" id="filters"></div>
   <div class="search-box">
-    <button class="toggle-btn" onclick="toggleDisco()">Bật Disco</button>
+    <button class="toggle-btn" onclick="toggleTheme()">Bật/Tắt Đèn LED</button>
   </div>
-  <ul id="list"></ul>
-
-  <script>
+  <ul id="list"></ul>  <script>
     const sheetID = "1eJdyVMQhQZFBc0-3NxFNSu5okQ9AEBl0QB3cHfQvC9o";
     const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json&sheet=Sheet1`;
     let allStories = [], activeCP = null;
@@ -114,7 +109,7 @@
       });
 
     function renderFilters() {
-      const uniqueCPs = [...new Set(allStories.flatMap(story => story.cp))];
+      const uniqueCPs = [...new Set(allStories.flatMap(s => s.cp))];
       const filterBox = document.getElementById('filters');
       uniqueCPs.forEach(cp => {
         const btn = document.createElement('button');
@@ -136,11 +131,9 @@
     }
 
     function toggleFilter(cp, button) {
-      const buttons = document.querySelectorAll('.filter-btn');
-      buttons.forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
       if (activeCP === cp) {
         activeCP = null;
-        button.classList.remove('active');
       } else {
         activeCP = cp;
         button.classList.add('active');
@@ -160,30 +153,33 @@
 
     document.getElementById('searchInput').addEventListener('input', applyFilters);
 
-    function toggleDisco() {
-      document.body.classList.toggle('disco-mode');
-    }
-
     const day = new Date().getDay();
     const moodText = document.getElementById('moodText');
     const quoteText = document.getElementById('quoteText');
     const moods = [
-      '☁️ Chủ Nhật – Mộng mơ thư giãn',
-      '🍵 Thứ Hai – Dịu dàng đầu tuần',
-      '☀️ Thứ Ba – Nắng nhẹ tươi sáng',
-      '💜 Thứ Tư – Lavender mộng mơ',
-      '🧡 Thứ Năm – Cam dịu nhẹ nhàng',
-      '✨ Thứ Sáu – Hồng rực năng lượng',
-      '🌊 Thứ Bảy – Xanh biển thư giãn'
+      { text: '☁️ Chủ Nhật – Mộng mơ thư giãn' },
+      { text: '🍵 Thứ Hai – Dịu dàng đầu tuần' },
+      { text: '☀️ Thứ Ba – Nắng nhẹ tươi sáng' },
+      { text: '💜 Thứ Tư – Lavender mộng mơ' },
+      { text: '🧡 Thứ Năm – Cam dịu nhẹ nhàng' },
+      { text: '✨ Thứ Sáu – Hồng rực năng lượng' },
+      { text: '🌊 Thứ Bảy – Xanh biển thư giãn' },
     ];
     const quotes = [
       'Mỗi dòng truyện là một bước chân vào thế giới mộng mơ.',
+      'Hôm nay bạn đáng yêu như một đoạn văn ngọt ngào.',
       'Đọc truyện cũng như yêu ai đó – càng đọc càng dính!',
       'Layla đọc truyện là vũ trụ dễ thương thêm một bậc.',
-      'Một trang truyện = một nụ cười thầm.'
+      'Truyện không tìm bạn – bạn tìm truyện vì bạn chill!',
+      'Thế giới cần tình yêu, Layla cần một chương mới!',
+      'Một trang truyện = một nụ cười thầm.',
     ];
-    moodText.innerText = `Hôm nay là ${moods[day]}`;
+    moodText.innerText = `Hôm nay là ${moods[day].text}`;
     quoteText.innerText = quotes[Math.floor(Math.random() * quotes.length)];
-  </script>
-</body>
+
+    // Chế độ sáng tối toggle
+    function toggleTheme() {
+      document.body.classList.toggle('light-mode');
+    }
+  </script></body>
 </html>
